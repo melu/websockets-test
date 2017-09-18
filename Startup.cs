@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 
 namespace wsserver
 {
@@ -61,6 +62,12 @@ namespace wsserver
                                         var request = Encoding.UTF8.GetString(buffer.Array, 
                                             buffer.Offset, 
                                             buffer.Count);
+                                        var parsedReq = JObject.Parse(request);
+
+                                        var eventName = parsedReq.GetValue("event").Value<String>();
+                                        var data = parsedReq.GetValue("data");
+                                        
+                                        world.RecieveEvent(new Event(eventName, user, data));
 
                                         world.Broadcast(request);
                                         break;

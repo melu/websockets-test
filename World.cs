@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 namespace wsserver
 {
 
-    public class World
+    public class World : EventManager
     {
         private ConcurrentDictionary<Guid, User> _users;
 
-        public World(){
-            _users = new ConcurrentDictionary<Guid, User>();
+        private ConcurrentBag<Object> entities;
+
+        public World() : base(){
+            _users = new ConcurrentDictionary<Guid, User>();          
         }
 
         public void AddUser(User user){

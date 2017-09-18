@@ -39,6 +39,7 @@
         </tbody>
     </table>
 
+    <script src="/websocket.js" />
     <script>
         var connectionForm = document.getElementById("connectionForm");
         var connectionUrl = document.getElementById("connectionUrl");
@@ -49,9 +50,8 @@
         var sendForm = document.getElementById("sendForm");
         var commsLog = document.getElementById("commsLog");
         var socket;
-        var scheme = document.location.protocol == "https:" ? "wss" : "ws";
-        var port = document.location.port ? (":" + document.location.port) : "";
-        connectionUrl.value = scheme + "://" + document.location.hostname + port + "/ws" ;
+
+
         function updateState() {
             function disable() {
                 sendMessage.disabled = true;
