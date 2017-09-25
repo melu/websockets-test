@@ -8,12 +8,12 @@ namespace wsserver
     {
         private ConcurrentQueue<Event> _events;
 
-        private Dictionary<string, Func<Event>> _handlers;
+        private Dictionary<string, Action<Event>> _handlers;
 
 
         public EventManager(){
             _events = new ConcurrentQueue<Event>();
-            _handlers = new Dictionary<string, Func<Event>>();
+            _handlers = new Dictionary<string, Action<Event>>();
         }
 
         public void ProcessEventsQueue(){
@@ -25,7 +25,7 @@ namespace wsserver
             }
         }
 
-        public void On(String eventName, Func<Event> handler){
+        public void On(String eventName, Action<Event> handler){
             _handlers.Add(eventName, handler);
         }
 

@@ -1,26 +1,42 @@
 
 
-var Client = {};
+var GameClient = {};
 
 var HANDLERS = {
-    "OPEN":socket.onopen,
-    "CLOSE":socket.onclose
+    // "OPEN":socket.onopen,
+    // "CLOSE":socket.onclose
 };
 
-Client = function(){
+GameClient = function(){
     var scheme = document.location.protocol == "https:" ? "wss" : "ws";
     var port = document.location.port ? (":" + document.location.port) : "";
-    connectionUrl.value = scheme + "://" + document.location.hostname + port + "/ws" ;
-
+    var connectionUrl = scheme + "://" + document.location.hostname + port + "/ws" ;
     this.socket = new WebSocket(connectionUrl);
     return this;
 }();
 
 
-Client.Send = function(event, data){
+GameClient.Send = function(event, data){
+    console.log("send");
     var request = {
         event: event,
         data: data
     };
-    Client.socket.send(req);
+    GameClient.socket.send(JSON.stringify(request));
+}
+
+GameClient.On = function(event, handler){
+    GameClient.HANDLERS[event] = handler;
+}
+
+GameClient.socket.onmessage = function(event){
+
+    // console.log(event);
+    // console.log(event.name);
+    var msg = JSON.parse(event.data);
+    console.log(event.data);
+    // console.log(event.data["name"]);
+    console.log(msg.name);
+    console.log(msg.data);
+    // console.log(event.data.data);
 }

@@ -13,7 +13,7 @@ namespace wsserver
     {
         private ConcurrentDictionary<Guid, User> _users;
 
-        private ConcurrentBag<Object> entities;
+        // private ConcurrentBag<Object> entities;
 
         public World() : base(){
             _users = new ConcurrentDictionary<Guid, User>();          
@@ -30,13 +30,25 @@ namespace wsserver
         }
 
         public void loop(){
+            var msg = new Message();
+            msg.name="prueba";
+            msg.data="data data data";
+
+            this.On("prueba", e => Console.WriteLine(e.data));
+
             while(true){
-                Broadcast("prueba");
+                ProcessEventsQueue();
                 Thread.Sleep(1000);
             }
         }
 
         public async void Broadcast(string mensaje){
+            foreach(var user in _users.Values){
+                await Task.Run(() => user.Send(mensaje));
+            }
+        }
+
+        public async void Broadcast(Object mensaje){
             foreach(var user in _users.Values){
                 await Task.Run(() => user.Send(mensaje));
             }
